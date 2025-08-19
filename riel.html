@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Converter</title>
+<link rel="icon" type="image/png" href="image.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Slightly nicer default font */
+            background-color: #f0f8ff; /* Light AliceBlue background */
+            color: #333; /* Darker text for better contrast */
+        }
+        .container {
+            width: 320px; /* Slightly wider */
+            margin: 50px auto;
+            padding: 25px;
+            border: 1px solid #b0e0e6; /* Softer PowderBlue border */
+            border-radius: 15px; /* More rounded corners */
+            text-align: center;
+            background-color: #ffffff; /* White background for the container */
+            background-image: url("image.png"); /* Keep the image, assuming it's cute */
+            background-size: cover; /* Adjust as needed */
+            background-position: center; /* Adjust as needed */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        h2 {
+             color: #4682b4; /* SteelBlue heading */
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555; /* Slightly lighter label text */
+            text-align: left; /* Align labels left */
+        }
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px; /* Slightly more padding */
+            margin-bottom: 15px; /* More space below */
+            box-sizing: border-box;
+            border: 1px solid #ccc; /* Standard border */
+            border-radius: 8px; /* Rounded inputs/selects */
+            font-size: 1em;
+        }
+        button {
+            padding: 12px 20px; /* Bigger button */
+            background-color: #ffb6c1; /* LightPink button */
+            color: white; /* White text */
+            border: none;
+            border-radius: 8px; /* Rounded button */
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease; /* Smooth hover transition */
+        }
+        button:hover {
+            background-color: #ff9cad; /* Slightly darker pink on hover */
+        }
+        #result {
+            margin-top: 20px; /* More space above result */
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2e8b57; /* SeaGreen result text */
+            min-height: 1.5em; /* Reserve space for result */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Currency Converter</h2>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+
+        <label for="fromCurrency">From:</label>
+        <select id="fromCurrency">
+            <option value="KHR">Riel (KHR)</option>
+            <option value="USD">Dollar (USD)</option>
+        </select>
+
+        <label for="toCurrency">To:</label>
+        <select id="toCurrency">
+            <option value="USD">Dollar (USD)</option>
+            <option value="KHR">Riel (KHR)</option>
+        </select>
+
+        <button id="convertBtn">Convert</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#convertBtn").click(function() {
+                var amount = parseFloat($("#amount").val());
+                var fromCurrency = $("#fromCurrency").val();
+                var toCurrency = $("#toCurrency").val();
+                var exchangeRate = 4100; // Example rate: 1 USD = 4100 KHR
+                var result;
+
+                if (isNaN(amount)) {
+                    $("#result").text("Please enter a valid amount.");
+                    return;
+                }
+
+                if (fromCurrency === toCurrency) {
+                    $("#result").text("Please select different currencies.");
+                    return;
+                }
+
+                if (fromCurrency === "KHR" && toCurrency === "USD") {
+                    result = amount / exchangeRate;
+                    $("#result").text(amount.toLocaleString('km-KH', { style: 'currency', currency: 'KHR' }) + " is approximately " + result.toLocaleString('en-US', { style: 'currency', currency: 'USD' }));
+                } else if (fromCurrency === "USD" && toCurrency === "KHR") {
+                    result = amount * exchangeRate;
+                    $("#result").text(amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + " is approximately " + result.toLocaleString('km-KH', { style: 'currency', currency: 'KHR' }));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
